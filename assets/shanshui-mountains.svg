@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="1000" height="650" preserveAspectRatio="xMaxYMin slice">
+  <defs>
+    <!-- Soft glowing crimson sun -->
+    <radialGradient id="mistySunGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E14836" stop-opacity="0.95"/>
+      <stop offset="65%" stop-color="#DE4E3C" stop-opacity="0.75"/>
+      <stop offset="85%" stop-color="#E86E5D" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#F2A497" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Mountain Layer 1: Distant Pale Wash -->
+    <linearGradient id="mntDistantGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9CAAB4" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#B2BEC7" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#DCE3E8" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Mountain Layer 2: Midground Soft Ink Wash -->
+    <linearGradient id="mntMidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6F808D" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#8898A4" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#C2CCD3" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <!-- Mountain Layer 3: Foreground Sumi Ridge -->
+    <linearGradient id="mntFrontGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3C4B56" stop-opacity="0.75"/>
+      <stop offset="55%" stop-color="#556673" stop-opacity="0.5"/>
+      <stop offset="90%" stop-color="#7B8C98" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#A5B3BE" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Crimson Rising Sun partially veiled in mountain mist -->
+  <circle cx="820" cy="180" r="58" fill="url(#mistySunGrad)"/>
+
+  <!-- Distant Mountains Layer (Very soft, sweeping) -->
+  <path d="M450 320 C520 230 580 210 650 250 C710 285 760 220 830 180 C890 145 930 160 1000 210 L1000 650 L450 650 Z" fill="url(#mntDistantGrad)"/>
+
+  <!-- Midground Mountain Ridges with Classic Shanshui Peaks -->
+  <path d="M380 420 C450 340 510 320 570 360 C630 400 690 310 760 270 C830 230 880 250 940 310 C970 340 990 330 1000 350 L1000 650 L380 650 Z" fill="url(#mntMidGrad)"/>
+
+  <!-- Crisp Foreground Ink Peaks with Craggy Slopes & Pine Textures -->
+  <path d="M520 520 C580 430 630 390 690 430 C740 460 790 370 860 320 C920 280 965 310 1000 360 L1000 650 L520 650 Z" fill="url(#mntFrontGrad)"/>
+
+  <!-- Classic Sumi Wash Pine Tree Clusters on Ridges -->
+  <g fill="#2B3740" opacity="0.6">
+    <!-- Ridge 1 Pine silhouetted clumps -->
+    <path d="M845 320 L848 310 L851 320 Z M850 322 L853 313 L856 322 Z M858 325 L861 316 L864 325 Z"/>
+    <path d="M870 330 L873 318 L876 330 Z M876 333 L879 322 L882 333 Z"/>
+    <path d="M920 300 L923 288 L926 300 Z M925 303 L929 292 L933 303 Z M932 306 L935 295 L938 306 Z"/>
+  </g>
+</svg>

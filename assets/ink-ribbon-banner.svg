@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" width="280" height="48" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#223340"/>
+      <stop offset="70%" stop-color="#344857"/>
+      <stop offset="90%" stop-color="#465D6F"/>
+      <stop offset="98%" stop-color="#5B7387" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#5B7387" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Painterly calligraphy brush stroke banner with organic feathered right edge -->
+  <path d="M0 0 H235 C248 3 260 8 275 14 C265 19 255 23 278 28 C262 33 250 38 272 44 C255 47 240 48 230 48 H0 Z" fill="url(#ribbonGrad)"/>
+</svg>

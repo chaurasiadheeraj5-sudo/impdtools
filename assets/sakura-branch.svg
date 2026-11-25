@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" width="600" height="500" preserveAspectRatio="xMinYMin meet">
+  <defs>
+    <radialGradient id="petalGrad1" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#F27666"/>
+      <stop offset="60%" stop-color="#D83E2D"/>
+      <stop offset="100%" stop-color="#A92518"/>
+    </radialGradient>
+    <radialGradient id="petalGrad2" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#EA5C49"/>
+      <stop offset="70%" stop-color="#C73222"/>
+      <stop offset="100%" stop-color="#8F1D12"/>
+    </radialGradient>
+    <radialGradient id="budGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#EE6B59"/>
+      <stop offset="100%" stop-color="#9A2216"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Main Gnarled Sumi Ink Trunk & Branches -->
+  <g fill="#1F262B">
+    <!-- Main stem entering from top edge (x=0, y=0) -->
+    <path d="M0 0 C45 35 90 60 145 92 C190 118 240 135 295 152 C350 168 395 190 435 220 C465 242 490 270 515 310 C500 305 480 290 455 272 C415 244 370 225 320 205 C270 185 210 162 160 132 C110 102 55 65 0 24 Z"/>
+    <!-- Secondary Upper Branch -->
+    <path d="M145 92 C175 70 215 48 265 30 C305 15 345 8 385 0 L370 0 C335 8 295 18 255 35 C210 52 170 73 140 95 Z"/>
+    <!-- Branch Splinter towards middle -->
+    <path d="M240 135 C265 110 295 85 330 65 C360 48 395 38 425 30 C395 38 360 52 325 72 C290 92 260 118 235 140 Z"/>
+    <!-- Lower Twig 1 -->
+    <path d="M185 145 C195 175 205 205 210 235 C213 250 212 265 208 280 C206 265 208 248 205 233 C200 205 190 178 180 150 Z"/>
+    <!-- Lower Twig 2 -->
+    <path d="M310 200 C325 230 338 260 348 295 C355 320 358 345 356 370 C354 345 350 320 342 296 C332 265 320 232 305 205 Z"/>
+    <!-- Right Drooping Twig -->
+    <path d="M435 220 C465 210 495 205 530 202 C555 200 580 202 600 208 C578 203 552 203 528 206 C495 210 465 216 438 226 Z"/>
+    <!-- Descending Right Branch Tip -->
+    <path d="M515 310 C535 345 550 385 558 425 C552 390 538 350 518 318 Z"/>
+  </g>
+
+  <!-- Delicate Twigs & Spurs -->
+  <g stroke="#1F262B" stroke-linecap="round" fill="none">
+    <path d="M265 30 Q285 20 305 12" stroke-width="2.5"/>
+    <path d="M330 65 Q355 55 380 48" stroke-width="2"/>
+    <path d="M425 30 Q450 24 475 22" stroke-width="1.8"/>
+    <path d="M385 185 Q410 170 435 160" stroke-width="2"/>
+    <path d="M470 250 Q495 240 520 235" stroke-width="2"/>
+    <path d="M210 235 Q225 255 238 275" stroke-width="1.8"/>
+    <path d="M348 295 Q368 315 385 338" stroke-width="1.8"/>
+    <path d="M530 202 Q555 190 580 182" stroke-width="1.5"/>
+  </g>
+
+  <!-- Cinnabar Plum Blossoms (Detailed 5-Petal Flowers) -->
+  <!-- Flower 1: Top Upper (x=305, y=12) -->
+  <g transform="translate(305, 12)">
+    <circle cx="-7" cy="-5" r="7" fill="url(#petalGrad1)"/>
+    <circle cx="6" cy="-6" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="8" cy="6" r="7" fill="url(#petalGrad1)"/>
+    <circle cx="-4" cy="8" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="-9" cy="2" r="6.5" fill="url(#petalGrad1)"/>
+    <circle cx="0" cy="1" r="3" fill="#FFEAA7"/>
+    <circle cx="0" cy="1" r="1.5" fill="#78170D"/>
+  </g>
+
+  <!-- Flower 2: Upper Branch Center (x=380, y=48) -->
+  <g transform="translate(380, 48)">
+    <circle cx="-8" cy="-6" r="8" fill="url(#petalGrad2)"/>
+    <circle cx="7" cy="-7" r="8.5" fill="url(#petalGrad1)"/>
+    <circle cx="9" cy="7" r="8" fill="url(#petalGrad2)"/>
+    <circle cx="-5" cy="9" r="8.5" fill="url(#petalGrad1)"/>
+    <circle cx="-10" cy="3" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="0" cy="1" r="3.5" fill="#FFEAA7"/>
+    <circle cx="0" cy="1" r="1.8" fill="#78170D"/>
+  </g>
+
+  <!-- Flower 3: Right Upper (x=475, y=24) -->
+  <g transform="translate(475, 24)">
+    <circle cx="-6" cy="-5" r="6.5" fill="url(#petalGrad1)"/>
+    <circle cx="5" cy="-5" r="7" fill="url(#petalGrad2)"/>
+    <circle cx="6" cy="5" r="6.5" fill="url(#petalGrad1)"/>
+    <circle cx="-4" cy="6" r="7" fill="url(#petalGrad2)"/>
+    <circle cx="0" cy="0" r="2.5" fill="#FFEAA7"/>
+  </g>
+
+  <!-- Flower 4: Main Branch Junction (x=245, y=135) - Large Focus Flower -->
+  <g transform="translate(245, 135) scale(1.2)">
+    <circle cx="-9" cy="-7" r="9" fill="url(#petalGrad1)"/>
+    <circle cx="8" cy="-8" r="9.5" fill="url(#petalGrad2)"/>
+    <circle cx="10" cy="8" r="9" fill="url(#petalGrad1)"/>
+    <circle cx="-6" cy="10" r="9.5" fill="url(#petalGrad2)"/>
+    <circle cx="-11" cy="3" r="8" fill="url(#petalGrad1)"/>
+    <circle cx="0" cy="1" r="4" fill="#FFF2BD"/>
+    <!-- Stamens -->
+    <path d="M-2 -2 L-4 -5 M2 -2 L4 -5 M-2 3 L-5 5 M3 3 L5 5" stroke="#78170D" stroke-width="1.2"/>
+    <circle cx="0" cy="1" r="2" fill="#78170D"/>
+  </g>
+
+  <!-- Flower 5: Drooping Twig Center (x=348, y=295) -->
+  <g transform="translate(348, 295) scale(1.1)">
+    <circle cx="-8" cy="-6" r="8" fill="url(#petalGrad2)"/>
+    <circle cx="7" cy="-7" r="8.5" fill="url(#petalGrad1)"/>
+    <circle cx="9" cy="7" r="8" fill="url(#petalGrad2)"/>
+    <circle cx="-5" cy="9" r="8.5" fill="url(#petalGrad1)"/>
+    <circle cx="-10" cy="2" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="0" cy="1" r="3.5" fill="#FFEAA7"/>
+    <circle cx="0" cy="1" r="1.8" fill="#78170D"/>
+  </g>
+
+  <!-- Flower 6: Drooping Lower Blossom (x=385, y=340) -->
+  <g transform="translate(385, 340)">
+    <circle cx="-7" cy="-5" r="7" fill="url(#petalGrad1)"/>
+    <circle cx="6" cy="-6" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="8" cy="6" r="7" fill="url(#petalGrad1)"/>
+    <circle cx="-4" cy="8" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="0" cy="1" r="3" fill="#FFEAA7"/>
+  </g>
+
+  <!-- Flower 7: Right Center (x=440, y=165) -->
+  <g transform="translate(440, 165)">
+    <circle cx="-7" cy="-5" r="7" fill="url(#petalGrad1)"/>
+    <circle cx="6" cy="-6" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="8" cy="6" r="7" fill="url(#petalGrad1)"/>
+    <circle cx="-4" cy="8" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="0" cy="0" r="2.8" fill="#FFEAA7"/>
+  </g>
+
+  <!-- Flower 8: Far Right (x=535, y=205) -->
+  <g transform="translate(535, 205)">
+    <circle cx="-7" cy="-5" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="6" cy="-6" r="8" fill="url(#petalGrad1)"/>
+    <circle cx="8" cy="6" r="7.5" fill="url(#petalGrad2)"/>
+    <circle cx="-5" cy="8" r="8" fill="url(#petalGrad1)"/>
+    <circle cx="0" cy="1" r="3" fill="#FFEAA7"/>
+  </g>
+
+  <!-- Flower 9: Lower Left Branch (x=210, y=235) -->
+  <g transform="translate(210, 235)">
+    <circle cx="-6" cy="-5" r="6.5" fill="url(#petalGrad1)"/>
+    <circle cx="6" cy="-5" r="7" fill="url(#petalGrad2)"/>
+    <circle cx="7" cy="5" r="6.5" fill="url(#petalGrad1)"/>
+    <circle cx="-4" cy="6" r="7" fill="url(#petalGrad2)"/>
+    <circle cx="0" cy="0" r="2.5" fill="#FFEAA7"/>
+  </g>
+
+  <!-- Buds & Dots scattered along twigs -->
+  <g fill="url(#budGrad)">
+    <circle cx="165" cy="80" r="3.8"/>
+    <circle cx="215" cy="55" r="4.2"/>
+    <circle cx="340" cy="35" r="4.5"/>
+    <circle cx="410" cy="22" r="3.5"/>
+    <circle cx="495" cy="235" r="4.5"/>
+    <circle cx="560" cy="192" r="4"/>
+    <circle cx="585" cy="180" r="3.2"/>
+    <circle cx="225" cy="265" r="4.2"/>
+    <circle cx="202" cy="285" r="3.5"/>
+    <circle cx="360" cy="370" r="3.8"/>
+    <circle cx="555" cy="420" r="4"/>
+    <circle cx="525" cy="325" r="4.5"/>
+  </g>
+</svg>

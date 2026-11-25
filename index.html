@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>impdtools - Image & PDF Processing Suite</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
+    
+        <!-- Google Fonts: Brush Calligraphy & East Asian Ink Wash Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Noto+Serif+JP:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Cropper.js CSS (Local with CDN fallback) -->
+    <link rel="stylesheet" href="lib/cropper.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <!-- Application Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+        <!-- SCENERY (cut from the reference artwork) -->
+    <div class="ink-scenery-bottom" aria-hidden="true">
+        <img src="assets/ref/low-left.png" class="scenery scenery-low-left" alt="">
+        <img src="assets/ref/low-right.png" class="scenery scenery-low-right" alt="">
+    </div>
+    <div class="ink-scenery" aria-hidden="true">
+        <img src="assets/ref/sakura.png" class="scenery scenery-sakura" alt="">
+        <img src="assets/ref/pagoda.png" class="scenery scenery-pagoda" alt="">
+        <img src="assets/ref/mountains.png" class="scenery scenery-mountains" alt="">
+    </div>
+
+    <div class="app-layout">
+        <!-- TOP NAVIGATION BAR -->
+        <header class="app-header">
+            <div class="header-brand">
+                <a href="./" class="brand-home-link" id="brand-home-link" title="impdtools home" aria-label="impdtools - go to home"><h1 class="brand-title"><img src="assets/ref/brand.png" class="brand-logo-img" alt="impdtools"></h1></a>
+                <span class="brand-separator" aria-hidden="true"></span>
+                <span class="brand-tag">Image &amp; PDF Studio</span>
+            </div>
+
+            <!-- TWO CATEGORY TABS & REFERENCED STYLE TOOL BUTTONS -->
+            <div class="nav-category-pills" id="nav-category-pills" role="tablist">
+                <button class="nav-category-btn active" data-category="image" id="cat-btn-image" role="tab" aria-selected="true" title="Switch to Image Tools">
+                    <span class="cat-label">Image Tools</span>
+                </button>
+                <button class="nav-category-btn" data-category="pdf" id="cat-btn-pdf" role="tab" aria-selected="false" title="Switch to PDF Tools">
+                    <span class="cat-label">PDF Tools</span>
+                </button>
+            </div>
+
+            <div class="header-actions">
+                <button class="icon-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode">☀️</button>
+                <button class="icon-btn" id="help-btn" title="Help &amp; Tips">❓</button>
+                <button class="icon-btn mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false" title="Menu">
+                    <span class="hamburger-icon" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MOBILE NAVIGATION DRAWER & BACKDROP (RIGHT SIDE COLLAPSIBLE) -->
+        <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
+        <aside class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Tools Navigation">
+            <div class="mobile-nav-header">
+                <div class="mobile-nav-title">
+                    <span class="brand-icon">🛠️</span>
+                    <div>
+                        <div class="mobile-nav-heading">impdtools</div>
+                        <div class="mobile-nav-sub">Suite Tools</div>
+                    </div>
+                </div>
+                <button class="icon-btn mobile-nav-close-btn" id="mobile-nav-close-btn" aria-label="Close Navigation Menu" title="Close Menu">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="mobile-nav-section-title">CHOOSE A TOOL</div>
+
+            <nav class="mobile-nav-list" id="mobile-nav-list">
+                <div class="mobile-nav-section-title">IMAGE TOOLS</div>
+                <button class="mobile-nav-item nav-tab-btn active" data-tool="resize-image">
+                    <span class="mobile-nav-icon">🖼️</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Image Resizer</span>
+                        <span class="mobile-nav-desc">Dimensions, units, 300 DPI &amp; max size</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="bulk-resize">
+                    <span class="mobile-nav-icon">🗂️</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Resize Bulk Images</span>
+                        <span class="mobile-nav-desc">Resize many photos at once, get a ZIP</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="append-images">
+                    <span class="mobile-nav-icon">🔀</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Append Images</span>
+                        <span class="mobile-nav-desc">Combine 2 images side-by-side or stacked</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="crop-image">
+                    <span class="mobile-nav-icon tab-icon-svg" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
+                            <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+                        </svg>
+                    </span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Image Cropper</span>
+                        <span class="mobile-nav-desc">Crop by cm, mm, inch &amp; aspect presets</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="print-sheet">
+                    <span class="mobile-nav-icon">🖨️</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Print Sheet</span>
+                        <span class="mobile-nav-desc">Passport &amp; visa photo placement grid</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <div class="mobile-nav-section-title" style="margin-top: 1rem;">PDF TOOLS</div>
+                <button class="mobile-nav-item nav-tab-btn" data-tool="pdf-tools" data-pdf-subtab="resize">
+                    <span class="mobile-nav-icon">📐</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Resize PDF</span>
+                        <span class="mobile-nav-desc">Scale pages to A4, Letter, A3</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="pdf-tools" data-pdf-subtab="split">
+                    <span class="mobile-nav-icon">✂️</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Split PDF</span>
+                        <span class="mobile-nav-desc">Extract pages or split into files</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="pdf-tools" data-pdf-subtab="merge">
+                    <span class="mobile-nav-icon">📑</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Merge PDFs</span>
+                        <span class="mobile-nav-desc">Combine multiple PDFs into one</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="pdf-tools" data-pdf-subtab="edit">
+                    <span class="mobile-nav-icon">✏️</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Edit &amp; Sign PDF</span>
+                        <span class="mobile-nav-desc">Rotate, delete, watermark &amp; stamp</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="pdf-tools" data-pdf-subtab="img-to-pdf">
+                    <span class="mobile-nav-icon">📄</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">Image to PDF</span>
+                        <span class="mobile-nav-desc">Convert single or batch images to PDF</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <button class="mobile-nav-item nav-tab-btn" data-tool="pdf-tools" data-pdf-subtab="pdf-to-img">
+                    <span class="mobile-nav-icon">📷</span>
+                    <div class="mobile-nav-info">
+                        <span class="mobile-nav-label">PDF to Image</span>
+                        <span class="mobile-nav-desc">Extract pages as JPG or PNG images</span>
+                    </div>
+                    <span class="mobile-nav-arrow" aria-hidden="true">&rsaquo;</span>
+                </button>
+            </nav>
+
+            <div class="mobile-nav-footer">
+                <div class="mobile-quick-actions">
+                    <button class="mobile-action-btn" id="mobile-drawer-theme-btn" title="Toggle Dark/Light Mode">
+                        <span class="mobile-theme-icon">☀️</span>
+                        <span class="mobile-theme-text">Toggle Theme</span>
+                    </button>
+                    <button class="mobile-action-btn" id="mobile-drawer-help-btn" title="Help & Tips">
+                        <span>❓</span>
+                        <span>Help & Guide</span>
+                    </button>
+                </div>
+                <div class="mobile-nav-badge">2026 © All rights reserved - impdtools</div>
+            </div>
+        </aside>
+
+                <!-- HERO CALLIGRAPHY & BRAND ESSENCE (Ink Wash Style) -->
+        <section class="hero-calligraphy-section">
+            <h2 class="hero-calligraphy-title"><img src="assets/ref/title.png" alt="Make every pixel count."></h2>
+            <p class="hero-calligraphy-sub">A quiet workspace for image and document work.</p>
+        </section>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <main class="app-main">
+            <!-- =========================================================================
+                 IN-PAGE TOOL SELECTION HUBS (INK WASH STYLE)
+                 ========================================================================= -->
+
+            <!-- 1. IMAGE TOOLS SELECTION AREA -->
+            <section class="tool-selection-hub active" id="hub-image-tools" aria-label="Image Tools Selection">
+                <!-- Top Button Row (Referenced Style Buttons) -->
+                
+
+                <!-- Feature Cards Grid (Referenced Bottom Cards Style) -->
+                <div class="hub-cards-grid">
+                    <div class="hub-card" data-tool="resize-image" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <polyline points="9 21 3 21 3 15"></polyline>
+                                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="hub-card-title">Image Resizer</h3>
+                                <p class="hub-card-desc">Resize single or batch photos by dimensions, DPI, and custom file size limits.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Resizer &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="bulk-resize" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="9" height="9" rx="1"></rect><rect x="12" y="12" width="9" height="9" rx="1"></rect><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline></svg></div>
+                            <div>
+                                <h3 class="hub-card-title">Resize Bulk Images</h3>
+                                <p class="hub-card-desc">Resize dozens of photos at once with one set of size, DPI and format settings, then download a ZIP.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Bulk Resize &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="append-images" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M7 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"></path>
+                                    <circle cx="8" cy="8" r="1.5"></circle>
+                                    <polyline points="16 11 12 7 6 13"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="hub-card-title">Append &amp; Combine</h3>
+                                <p class="hub-card-desc">Merge multiple images side-by-side or stacked with custom canvas spacing.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Combiner &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="crop-image" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2v14a2 2 0 0 0 2 2h14"></path>
+                                    <path d="M18 22V8a2 2 0 0 0-2-2H2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="hub-card-title">Image Cropper</h3>
+                                <p class="hub-card-desc">Crop photos with exact dimensions, 300 DPI scaling, and passport / visa presets.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Cropper &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="print-sheet" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="hub-card-title">Print Sheet</h3>
+                                <p class="hub-card-desc">Generate print-ready passport and visa photo sheets on A4 or 4&times;6&quot; paper.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Print Sheet &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PDF TOOLS SELECTION AREA -->
+            <section class="tool-selection-hub" id="hub-pdf-tools" style="display: none;" aria-label="PDF Tools Selection">
+                <!-- Top Button Row (Referenced Style Buttons) -->
+                
+
+                <!-- Feature Cards Grid (Referenced Bottom Cards Style) -->
+                <div class="hub-cards-grid">
+                    <div class="hub-card" data-tool="pdf-tools" data-pdf-subtab="resize" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">📐</div>
+                            <div>
+                                <h3 class="hub-card-title">Resize PDF</h3>
+                                <p class="hub-card-desc">Scale page dimensions to A4, Letter, A3, Legal with target file size compression.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Resize PDF &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="pdf-tools" data-pdf-subtab="split" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">✂️</div>
+                            <div>
+                                <h3 class="hub-card-title">Split PDF</h3>
+                                <p class="hub-card-desc">Extract specific page ranges, split every N pages, or split into single pages.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Split PDF &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="pdf-tools" data-pdf-subtab="merge" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">📑</div>
+                            <div>
+                                <h3 class="hub-card-title">Merge PDF</h3>
+                                <p class="hub-card-desc">Combine multiple PDF files into one clean document with easy drag &amp; drop reordering.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Merge PDF &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="pdf-tools" data-pdf-subtab="edit" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">✏️</div>
+                            <div>
+                                <h3 class="hub-card-title">Edit &amp; Sign PDF</h3>
+                                <p class="hub-card-desc">Rotate, delete, reorder pages, apply custom watermarks, and stamp signatures.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Edit &amp; Sign &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="pdf-tools" data-pdf-subtab="img-to-pdf" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">📄</div>
+                            <div>
+                                <h3 class="hub-card-title">Image to PDF</h3>
+                                <p class="hub-card-desc">Convert single or batch JPG, PNG, WEBP images into an organized PDF document.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open Image to PDF &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="hub-card" data-tool="pdf-tools" data-pdf-subtab="pdf-to-img" role="button" tabindex="0">
+                        <div class="hub-card-header">
+                            <div class="hub-card-icon">📷</div>
+                            <div>
+                                <h3 class="hub-card-title">PDF to Image</h3>
+                                <p class="hub-card-desc">Render PDF pages into crystal-clear 300 DPI high-resolution JPG or PNG images.</p>
+                            </div>
+                        </div>
+                        <div class="hub-card-footer">
+                            <span class="hub-card-action">Open PDF to Image &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- =========================================================================
+                 TOOL 1: IMAGE RESIZER
+                 ========================================================================= -->
+            <section class="tool-view active" id="view-resize-image">
+                <div class="tool-back-bar">
+                    <button type="button" class="btn-back-to-hub" data-category="image" title="Return to Image Tools">
+                        <span class="back-arrow" aria-hidden="true">&larr;</span>
+                        <span>Back to Image Tools</span>
+                    </button>
+                </div>
+                <div class="tool-header">
+                    <h2>Image Resizer</h2>
+                    <p class="tool-desc">Resize single or batch images by width, height, unit (px, cm, mm, inch), DPI (300/600), format, and compression.</p>
+                </div>
+
+                <div class="resizer-container">
+                    <!-- Dropzone -->
+                    <div class="dropzone ink-dropzone" id="resizer-dropzone">
+                        <input type="file" id="resizer-file-input" accept="image/*" multiple hidden>
+                        <div class="dropzone-content">
+                            <div class="ink-camera-icon">
+                                <svg viewBox="0 0 54 44" width="54" height="44" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 6L18 2H36L39 6H48C50.2 6 52 7.8 52 10V38C52 40.2 50.2 42 48 42H6C3.8 42 2 40.2 2 38V10C2 7.8 3.8 6 6 6H15Z"/>
+                                    <circle cx="27" cy="24" r="9"/>
+                                    <!-- Plus circle badge on bottom right -->
+                                    <circle cx="43" cy="33" r="7" fill="currentColor" stroke="none"/>
+                                    <path d="M43 29.5V36.5M39.5 33H46.5" stroke="#F6F0E6" stroke-width="2.4"/>
+                                </svg>
+                            </div>
+                            <h3 class="dropzone-main-text">Drop images here or <span class="browse-link">browse files</span></h3>
+                            <p class="dropzone-sub-text">JPG &bull; PNG &bull; WEBP</p>
+                        </div>
+                    </div>
+
+                    <!-- File Tabs for Batch Resizing -->
+                    <div class="file-tabs-bar" id="resizer-file-tabs" style="display: none;"></div>
+
+                    <!-- Empty State -->
+                    <div class="empty-state" id="resizer-empty">
+                        <p>No image selected. Upload an image above to start resizing.</p>
+                    </div>
+
+                    <!-- Editor Grid -->
+                    <div class="editor-grid" id="resizer-editor" style="display: none;">
+                        <!-- Controls Panel -->
+                        <div class="controls-panel">
+                            <div class="panel-section">
+                                <h4 class="section-title">Dimensions & Units</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="resizer-unit">Unit</label>
+                                        <select id="resizer-unit" class="form-select">
+                                            <option value="px" selected>px</option>
+                                            <option value="cm">cm</option>
+                                            <option value="mm">mm</option>
+                                            <option value="inch">inch</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="resizer-dpi">DPI (Resolution)</label>
+                                        <select id="resizer-dpi" class="form-select">
+                                            <option value="72">72 DPI (Web)</option>
+                                            <option value="96">96 DPI (Standard)</option>
+                                            <option value="150">150 DPI (Medium)</option>
+                                            <option value="300" selected>300 DPI (Print)</option>
+                                            <option value="600">600 DPI (Ultra HD)</option>
+                                            <option value="custom">Custom DPI...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="resizer-custom-dpi-group" style="display: none;">
+                                    <label for="resizer-custom-dpi">Custom DPI Value</label>
+                                    <input type="number" id="resizer-custom-dpi" class="form-input" min="10" max="2400" value="300">
+                                </div>
+
+                                <div class="dimensions-input-row">
+                                    <div class="form-group">
+                                        <label for="resizer-width">Width</label>
+                                        <input type="number" id="resizer-width" class="form-input" step="any" min="1">
+                                    </div>
+
+                                    <button class="lock-aspect-btn active" id="resizer-lock-aspect" title="Lock Aspect Ratio">
+                                        <span class="lock-icon">🔒</span>
+                                    </button>
+
+                                    <div class="form-group">
+                                        <label for="resizer-height">Height</label>
+                                        <input type="number" id="resizer-height" class="form-input" step="any" min="1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Quick Presets</h4>
+                                <div class="presets-wrap">
+                                    <button class="btn-preset resizer-preset-btn" data-preset="25%">25%</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="50%">50%</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="75%">75%</button>
+                                    <button class="btn-preset resizer-preset-btn active" data-preset="100%">100%</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="150%">150%</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="200%">200%</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="passport">Passport (3.5x4.5cm)</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="usvisa">US Visa (2x2")</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="square">Square 1:1</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="fhd">Full HD (1080p)</button>
+                                    <button class="btn-preset resizer-preset-btn" data-preset="4k">4K UHD</button>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Export Settings</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="resizer-format">Output Format</label>
+                                        <select id="resizer-format" class="form-select">
+                                            <option value="image/jpeg" selected>JPG / JPEG</option>
+                                            <option value="image/png">PNG</option>
+                                            <option value="image/webp">WEBP</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="resizer-quality-group">
+                                        <div class="label-with-value">
+                                            <label for="resizer-quality">Quality</label>
+                                            <span id="resizer-quality-val" class="badge-value">92%</span>
+                                        </div>
+                                        <input type="range" id="resizer-quality" min="10" max="100" value="92" class="form-slider">
+                                    </div>
+                                </div>
+
+                                <div class="target-size-box">
+                                    <div class="form-check-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="resizer-enable-target-size">
+                                            <span><strong>Target File Size</strong> (Max output size)</span>
+                                        </label>
+                                    </div>
+                                    <div class="target-size-controls" id="resizer-target-size-controls" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="resizer-target-size">Dedicated File Size</label>
+                                            <div class="input-with-select">
+                                                <input type="number" id="resizer-target-size" class="form-input" min="1" step="any" value="100" placeholder="e.g. 50">
+                                                <select id="resizer-target-size-unit" class="form-select select-inline">
+                                                    <option value="KB" selected>KB</option>
+                                                    <option value="MB">MB</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="target-size-presets">
+                                            <button type="button" class="btn-preset resizer-size-preset" data-size="20" data-unit="KB">20 KB</button>
+                                            <button type="button" class="btn-preset resizer-size-preset" data-size="50" data-unit="KB">50 KB</button>
+                                            <button type="button" class="btn-preset resizer-size-preset" data-size="100" data-unit="KB">100 KB</button>
+                                            <button type="button" class="btn-preset resizer-size-preset" data-size="200" data-unit="KB">200 KB</button>
+                                            <button type="button" class="btn-preset resizer-size-preset" data-size="500" data-unit="KB">500 KB</button>
+                                            <button type="button" class="btn-preset resizer-size-preset" data-size="1" data-unit="MB">1 MB</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-actions">
+                                <button class="btn-primary btn-large" id="resizer-download-btn">
+                                    <span>⬇️</span> Download Resized Image
+                                </button>
+                                <button class="btn-secondary btn-large" id="resizer-batch-download-btn" style="display: none;">
+                                    <span>📦</span> Download All (ZIP)
+                                </button>
+                                <button type="button" class="btn-do-more" id="resizer-do-more-btn" title="Resize more images">
+                                    <span class="btn-icon-symbol">➕</span>
+                                    <span>Do More Image Resize</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Preview Panel -->
+                        <div class="preview-panel">
+                            <div class="preview-header">
+                                <span class="badge" id="resizer-orig-info">Original: -</span>
+                                <span class="badge badge-accent" id="resizer-target-info">Output: -</span>
+                            </div>
+                            <div class="preview-stage">
+                                <canvas id="resizer-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =========================================================================
+                 TOOL: BULK IMAGE RESIZER
+                 ========================================================================= -->
+            <section class="tool-view" id="view-bulk-resize">
+                <div class="tool-back-bar">
+                    <button type="button" class="btn-back-to-hub" data-category="image" title="Return to Image Tools">
+                        <span class="back-arrow" aria-hidden="true">&larr;</span>
+                        <span>Back to Image Tools</span>
+                    </button>
+                </div>
+                <div class="tool-header">
+                    <h2>Resize Bulk Images</h2>
+                    <p class="tool-desc">Add many images, choose one size, DPI and format for all of them, and download everything in a single ZIP.</p>
+                </div>
+
+                <div class="resizer-container">
+                    <div class="dropzone ink-dropzone" id="bulk-dropzone">
+                        <input type="file" id="bulk-file-input" accept="image/*" multiple hidden>
+                        <div class="dropzone-content">
+                            <div class="ink-camera-icon">
+                                <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            </div>
+                            <h3 class="dropzone-main-text">Drop many images here or <span class="browse-link">browse files</span></h3>
+                            <p class="dropzone-sub-text">JPG &bull; PNG &bull; WEBP &bull; select as many as you like</p>
+                        </div>
+                    </div>
+
+                    <div class="empty-state" id="bulk-empty"><p>No images yet. Add a batch above to start resizing.</p></div>
+
+                    <div class="editor-grid" id="bulk-editor" style="display: none;">
+                        <div class="controls-panel">
+                            <div class="panel-section">
+                                <h4 class="section-title">Resize Method</h4>
+                                <div class="form-group">
+                                    <label for="bulk-mode">Method</label>
+                                    <select id="bulk-mode" class="form-select">
+                                        <option value="exact" selected>Exact width &amp; height</option>
+                                        <option value="maxside">Longest side (keep ratio)</option>
+                                        <option value="percent">Scale by percentage</option>
+                                    </select>
+                                </div>
+                                <div class="form-row" id="bulk-size-fields">
+                                    <div class="form-group">
+                                        <label for="bulk-unit">Unit</label>
+                                        <select id="bulk-unit" class="form-select">
+                                            <option value="px" selected>px</option>
+                                            <option value="cm">cm</option>
+                                            <option value="mm">mm</option>
+                                            <option value="inch">inch</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bulk-width" id="bulk-width-label">Width</label>
+                                        <input type="number" id="bulk-width" class="form-input" min="1" step="any" value="1024">
+                                    </div>
+                                    <div class="form-group" id="bulk-height-field">
+                                        <label for="bulk-height">Height</label>
+                                        <input type="number" id="bulk-height" class="form-input" min="1" step="any" value="1024">
+                                    </div>
+                                </div>
+                                <div class="form-group bulk-hidden" id="bulk-percent-field">
+                                    <label for="bulk-percent">Scale (%)</label>
+                                    <input type="number" id="bulk-percent" class="form-input" min="1" max="500" value="50">
+                                </div>
+                                <div class="form-group" id="bulk-fit-field">
+                                    <label for="bulk-fit">When ratio differs</label>
+                                    <select id="bulk-fit" class="form-select">
+                                        <option value="cover" selected>Fill &amp; crop (Cover)</option>
+                                        <option value="contain">Fit inside (Contain)</option>
+                                        <option value="stretch">Stretch</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bulk-dpi">DPI</label>
+                                    <select id="bulk-dpi" class="form-select">
+                                        <option value="72">72 DPI (Web)</option>
+                                        <option value="150">150 DPI</option>
+                                        <option value="300" selected>300 DPI (Print)</option>
+                                        <option value="600">600 DPI</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Quick Presets</h4>
+                                <div class="presets-wrap">
+                                    <button type="button" class="btn-preset bulk-preset" data-mode="percent" data-pct="25">25%</button>
+                                    <button type="button" class="btn-preset bulk-preset" data-mode="percent" data-pct="50">50%</button>
+                                    <button type="button" class="btn-preset bulk-preset" data-mode="percent" data-pct="75">75%</button>
+                                    <button type="button" class="btn-preset bulk-preset" data-mode="exact" data-w="1920" data-h="1080">Full HD</button>
+                                    <button type="button" class="btn-preset bulk-preset" data-mode="exact" data-w="1080" data-h="1080">Square 1080</button>
+                                    <button type="button" class="btn-preset bulk-preset" data-mode="maxside" data-w="1600" data-h="1600">Max 1600px</button>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Export Settings</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="bulk-format">Output Format</label>
+                                        <select id="bulk-format" class="form-select">
+                                            <option value="image/jpeg" selected>JPG / JPEG</option>
+                                            <option value="image/png">PNG</option>
+                                            <option value="image/webp">WEBP</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="bulk-quality-group">
+                                        <div class="label-with-value">
+                                            <label for="bulk-quality">Quality</label>
+                                            <span id="bulk-quality-val" class="badge-value">90%</span>
+                                        </div>
+                                        <input type="range" id="bulk-quality" min="10" max="100" value="90" class="form-slider">
+                                    </div>
+                                </div>
+                                <div class="target-size-box">
+                                    <div class="form-check-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="bulk-enable-target-size">
+                                            <span><strong>Target File Size</strong> (per image, JPG / WEBP)</span>
+                                        </label>
+                                    </div>
+                                    <div class="target-size-controls bulk-hidden" id="bulk-target-size-controls">
+                                        <div class="input-with-select">
+                                            <input type="number" id="bulk-target-size" class="form-input" min="1" step="any" value="100">
+                                            <select id="bulk-target-size-unit" class="form-select select-inline">
+                                                <option value="KB" selected>KB</option>
+                                                <option value="MB">MB</option>
+                                            </select>
+                                        </div>
+                                        <div class="target-size-presets">
+                                            <button type="button" class="btn-preset bulk-size-preset" data-size="50" data-unit="KB">50 KB</button>
+                                            <button type="button" class="btn-preset bulk-size-preset" data-size="100" data-unit="KB">100 KB</button>
+                                            <button type="button" class="btn-preset bulk-size-preset" data-size="200" data-unit="KB">200 KB</button>
+                                            <button type="button" class="btn-preset bulk-size-preset" data-size="500" data-unit="KB">500 KB</button>
+                                            <button type="button" class="btn-preset bulk-size-preset" data-size="1" data-unit="MB">1 MB</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-actions">
+                                <button class="btn-primary btn-large" id="bulk-download-btn"><span>📦</span> Resize &amp; Download ZIP</button>
+                                <button type="button" class="btn-secondary" id="bulk-clear-btn"><span>🗑️</span> Clear All</button>
+                                <button type="button" class="btn-do-more" id="bulk-do-more-btn" title="Add more images">
+                                    <span class="btn-icon-symbol">➕</span><span>Add More Images</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="preview-panel">
+                            <div class="preview-header">
+                                <span class="badge badge-accent" id="bulk-count">0 images</span>
+                            </div>
+                            <div class="bulk-progress" id="bulk-progress" style="display: none;"><div class="bulk-progress-bar" id="bulk-progress-bar"></div></div>
+                            <div class="bulk-list" id="bulk-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =========================================================================
+                 TOOL 2: APPEND / COMBINE IMAGES
+                 ========================================================================= -->
+            <section class="tool-view" id="view-append-images">
+                <div class="tool-back-bar">
+                    <button type="button" class="btn-back-to-hub" data-category="image" title="Return to Image Tools">
+                        <span class="back-arrow" aria-hidden="true">&larr;</span>
+                        <span>Back to Image Tools</span>
+                    </button>
+                </div>
+                <div class="tool-header">
+                    <h2>Append Images</h2>
+                    <p class="tool-desc">Combine two images horizontally (side-by-side) or vertically (stacked) with custom dimensions, spacing, background color, and 300 DPI export.</p>
+                </div>
+
+                <div class="combiner-container">
+                    <!-- Top Toolbar: Direction & Quick Swap -->
+                    <div class="combiner-top-toolbar">
+                        <div class="combiner-direction-pill-group">
+                            <span class="toolbar-label">Arrangement:</span>
+                            <div class="radio-toggle-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="combiner-direction" value="horizontal" checked>
+                                    <span>Side by Side (Horizontal)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="combiner-direction" value="vertical">
+                                    <span>Stacked (Vertical)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-secondary combiner-toolbar-swap" id="combiner-swap-btn" title="Swap Image 1 &amp; Image 2">
+                            <span>⇄</span> Swap Images
+                        </button>
+                    </div>
+
+                    <!-- Side-by-Side Upload & Dimensions Cards -->
+                    <div class="combiner-cards-row">
+                        <!-- Image 1 Card -->
+                        <div class="combiner-card">
+                            <div class="combiner-card-header">
+                                <div class="card-title-group">
+                                    <span class="card-step-badge">1</span>
+                                    <h3>Image 1</h3>
+                                </div>
+                                <span class="badge" id="combiner-info1"></span>
+                            </div>
+                            <div class="dropzone ink-dropzone combiner-dropzone" id="combiner-drop1">
+                                <input type="file" id="combiner-file1" accept="image/*" hidden>
+                                <div class="dropzone-content">
+                                    <div class="ink-camera-icon">
+                                        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="3" ry="3"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                    </div>
+                                    <h4 class="dropzone-main-text">Select or drop <span class="browse-link">Image 1</span></h4>
+                                    <p class="dropzone-sub-text">JPG &bull; PNG &bull; WEBP</p>
+                                </div>
+                            </div>
+                            <div class="combiner-inputs-grid combiner-inputs-grid-2x2">
+                                <div class="form-group">
+                                    <label for="combiner-unit1">Unit</label>
+                                    <select id="combiner-unit1" class="form-select">
+                                        <option value="px" selected>px</option>
+                                        <option value="cm">cm</option>
+                                        <option value="mm">mm</option>
+                                        <option value="inch">inch</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="combiner-w1">Width</label>
+                                    <input type="number" id="combiner-w1" class="form-input" min="1" placeholder="Auto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="combiner-h1">Height</label>
+                                    <input type="number" id="combiner-h1" class="form-input" min="1" placeholder="Auto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="combiner-fit1">Fit Mode</label>
+                                    <select id="combiner-fit1" class="form-select">
+                                        <option value="cover" selected>Cover</option>
+                                        <option value="contain">Contain</option>
+                                        <option value="stretch">Stretch</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image 2 Card -->
+                        <div class="combiner-card">
+                            <div class="combiner-card-header">
+                                <div class="card-title-group">
+                                    <span class="card-step-badge">2</span>
+                                    <h3>Image 2</h3>
+                                </div>
+                                <span class="badge" id="combiner-info2"></span>
+                            </div>
+                            <div class="dropzone ink-dropzone combiner-dropzone" id="combiner-drop2">
+                                <input type="file" id="combiner-file2" accept="image/*" hidden>
+                                <div class="dropzone-content">
+                                    <div class="ink-camera-icon">
+                                        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="3" ry="3"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21 15 16 10 5 21"></polyline>
+                                        </svg>
+                                    </div>
+                                    <h4 class="dropzone-main-text">Select or drop <span class="browse-link">Image 2</span></h4>
+                                    <p class="dropzone-sub-text">JPG &bull; PNG &bull; WEBP</p>
+                                </div>
+                            </div>
+                            <div class="combiner-inputs-grid combiner-inputs-grid-2x2">
+                                <div class="form-group">
+                                    <label for="combiner-unit2">Unit</label>
+                                    <select id="combiner-unit2" class="form-select">
+                                        <option value="px" selected>px</option>
+                                        <option value="cm">cm</option>
+                                        <option value="mm">mm</option>
+                                        <option value="inch">inch</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="combiner-w2">Width</label>
+                                    <input type="number" id="combiner-w2" class="form-input" min="1" placeholder="Auto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="combiner-h2">Height</label>
+                                    <input type="number" id="combiner-h2" class="form-input" min="1" placeholder="Auto">
+                                </div>
+                                <div class="form-group">
+                                    <label for="combiner-fit2">Fit Mode</label>
+                                    <select id="combiner-fit2" class="form-select">
+                                        <option value="cover" selected>Cover</option>
+                                        <option value="contain">Contain</option>
+                                        <option value="stretch">Stretch</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Two-Column Settings & Live Preview Grid -->
+                    <div class="editor-grid combiner-editor-grid">
+                        <!-- Left Panel: Settings -->
+                        <div class="controls-panel">
+                            <div class="panel-section">
+                                <h4 class="section-title">Canvas &amp; Alignment Options</h4>
+                                <div class="combiner-canvas-options-grid">
+                                    <div class="form-group">
+                                        <label for="combiner-align">Alignment</label>
+                                        <select id="combiner-align" class="form-select">
+                                            <option value="center" selected>Center</option>
+                                            <option value="start">Start (Top / Left)</option>
+                                            <option value="end">End (Bottom / Right)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="combiner-gap">Gap / Spacing</label>
+                                        <div class="input-with-select">
+                                            <input type="number" id="combiner-gap" class="form-input" min="0" value="0">
+                                            <select id="combiner-gap-unit" class="form-select select-inline">
+                                                <option value="px" selected>px</option>
+                                                <option value="mm">mm</option>
+                                                <option value="cm">cm</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="combiner-bgcolor">Background Color</label>
+                                        <div class="color-picker-row">
+                                            <input type="color" id="combiner-bgcolor" value="#FFFFFF" class="form-color" title="Choose background color">
+                                            <span class="color-hex-tag" id="combiner-bgcolor-label">#FFFFFF</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Export Settings</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="combiner-format">Output Format</label>
+                                        <select id="combiner-format" class="form-select">
+                                            <option value="image/jpeg" selected>JPG / JPEG</option>
+                                            <option value="image/png">PNG</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="combiner-dpi">DPI Setting</label>
+                                        <select id="combiner-dpi" class="form-select">
+                                            <option value="300" selected>300 DPI (Print)</option>
+                                            <option value="72">72 DPI (Web)</option>
+                                            <option value="150">150 DPI (Standard)</option>
+                                            <option value="600">600 DPI (Ultra HD)</option>
+                                            <option value="custom">Custom DPI...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="combiner-custom-dpi-group" style="display: none;">
+                                    <label for="combiner-custom-dpi">Custom DPI</label>
+                                    <input type="number" id="combiner-custom-dpi" class="form-input" min="10" max="2400" value="300">
+                                </div>
+
+                                <div class="form-group" id="combiner-quality-group">
+                                    <div class="label-with-value">
+                                        <label for="combiner-quality">JPG Quality</label>
+                                        <span id="combiner-quality-val" class="badge-value">92%</span>
+                                    </div>
+                                    <input type="range" id="combiner-quality" min="10" max="100" value="92" class="form-slider">
+                                </div>
+
+                                <div class="target-size-box combiner-target-size-group">
+                                    <div class="form-check-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="combiner-enable-target-size">
+                                            <span><strong>Target File Size</strong> (Max output size)</span>
+                                        </label>
+                                    </div>
+                                    <div class="target-size-controls" id="combiner-target-size-controls" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="combiner-target-size">Dedicated File Size</label>
+                                            <div class="input-with-select">
+                                                <input type="number" id="combiner-target-size" class="form-input" min="1" step="any" value="100" placeholder="e.g. 50">
+                                                <select id="combiner-target-size-unit" class="form-select select-inline">
+                                                    <option value="KB" selected>KB</option>
+                                                    <option value="MB">MB</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="target-size-presets">
+                                            <button type="button" class="btn-preset combiner-size-preset" data-size="50" data-unit="KB">50 KB</button>
+                                            <button type="button" class="btn-preset combiner-size-preset" data-size="100" data-unit="KB">100 KB</button>
+                                            <button type="button" class="btn-preset combiner-size-preset" data-size="200" data-unit="KB">200 KB</button>
+                                            <button type="button" class="btn-preset combiner-size-preset" data-size="500" data-unit="KB">500 KB</button>
+                                            <button type="button" class="btn-preset combiner-size-preset" data-size="1" data-unit="MB">1 MB</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-actions">
+                                <button class="btn-primary btn-large" id="combiner-download-btn" disabled>
+                                    <span>⬇️</span> Download Combined Image
+                                </button>
+                                <button type="button" class="btn-do-more" id="combiner-do-more-btn" title="Append more images">
+                                    <span class="btn-icon-symbol">➕</span>
+                                    <span>Append More Images</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Live Canvas Preview -->
+                        <div class="preview-panel combiner-preview-panel">
+                            <div class="preview-header">
+                                <span class="badge badge-accent" id="combiner-canvas-info">Combined: -</span>
+                            </div>
+                            <div class="preview-stage">
+                                <canvas id="combiner-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =========================================================================
+                 TOOL 3: IMAGE CROPPER
+                 ========================================================================= -->
+            <section class="tool-view" id="view-crop-image">
+                <div class="tool-back-bar">
+                    <button type="button" class="btn-back-to-hub" data-category="image" title="Return to Image Tools">
+                        <span class="back-arrow" aria-hidden="true">&larr;</span>
+                        <span>Back to Image Tools</span>
+                    </button>
+                </div>
+                <div class="tool-header">
+                    <h2>Image Cropper</h2>
+                    <p class="tool-desc">Crop images to exact dimensions in cm, mm, px, or inch with DPI scaling for passport, visa, and print photos.</p>
+                </div>
+
+                <div class="cropper-tool-container">
+                    <div class="dropzone ink-dropzone" id="cropper-dropzone">
+                        <input type="file" id="cropper-file-input" accept="image/*" hidden>
+                        <div class="dropzone-content">
+                            <div class="ink-camera-icon">
+                                <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
+                                    <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+                                </svg>
+                            </div>
+                            <h3 class="dropzone-main-text">Drop image to crop or <span class="browse-link">browse file</span></h3>
+                            <p class="dropzone-sub-text">JPG &bull; PNG &bull; WEBP &bull; Supports Ctrl+V Paste</p>
+                        </div>
+                    </div>
+
+                    <div class="empty-state" id="cropper-empty">
+                        <p>No image loaded. Upload an image above to start cropping.</p>
+                    </div>
+
+                    <div class="editor-grid" id="cropper-editor" style="display: none;">
+                        <!-- Left Panel: Dimensions & Crop Controls -->
+                        <div class="controls-panel">
+                            <div class="panel-section">
+                                <h4 class="section-title">Dimensions</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cropper-unit">Unit</label>
+                                        <select id="cropper-unit" class="form-select">
+                                            <option value="cm" selected>cm</option>
+                                            <option value="mm">mm</option>
+                                            <option value="px">px</option>
+                                            <option value="inch">inch</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cropper-dpi">DPI</label>
+                                        <select id="cropper-dpi" class="form-select">
+                                            <option value="72">72 DPI</option>
+                                            <option value="150">150 DPI</option>
+                                            <option value="300" selected>300 DPI (Photo)</option>
+                                            <option value="600">600 DPI</option>
+                                            <option value="custom">Custom...</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="cropper-custom-dpi-group" style="display: none;">
+                                    <label for="cropper-custom-dpi">Custom DPI</label>
+                                    <input type="number" id="cropper-custom-dpi" class="form-input" min="10" max="2400" value="300">
+                                </div>
+
+                                <div class="dimensions-input-row">
+                                    <div class="form-group">
+                                        <label for="cropper-width">Width</label>
+                                        <input type="number" id="cropper-width" class="form-input" step="any" min="0.1" value="3.5">
+                                    </div>
+                                    <button class="lock-aspect-btn" id="cropper-lock-aspect" title="Aspect Ratio Unlocked">
+                                        <span class="lock-icon">🔓</span>
+                                    </button>
+                                    <div class="form-group">
+                                        <label for="cropper-height">Height</label>
+                                        <input type="number" id="cropper-height" class="form-input" step="any" min="0.1" value="4.5">
+                                    </div>
+                                </div>
+
+                                <button class="btn-secondary btn-block btn-input-match" id="cropper-apply-dim">
+                                    Apply to Crop Box
+                                </button>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Aspect Presets</h4>
+                                <div class="presets-wrap">
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="free">Free Form</button>
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="1:1">1:1 Square</button>
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="passport">3.5 × 4.5 cm (Passport)</button>
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="usvisa">2 × 2" (US Visa)</button>
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="3:4">3 × 4 cm</button>
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="4:3">4:3</button>
+                                    <button class="btn-preset cropper-preset-btn" data-aspect="16:9">16:9</button>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Transform</h4>
+                                <div class="toolbar-btn-row">
+                                    <button class="btn-tool" id="cropper-rotate-left" title="Rotate Counter-Clockwise 90°">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+                                        <span>Rotate Left</span>
+                                    </button>
+                                    <button class="btn-tool" id="cropper-rotate-right" title="Rotate Clockwise 90°">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+                                        <span>Rotate Right</span>
+                                    </button>
+                                    <button class="btn-tool" id="cropper-flip-x" title="Flip Horizontal">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3"/><path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"/><path d="M12 20v2"/><path d="M12 14v2"/><path d="M12 8v2"/><path d="M12 2v2"/></svg>
+                                        <span>Flip H</span>
+                                    </button>
+                                    <button class="btn-tool" id="cropper-flip-y" title="Flip Vertical">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3"/><path d="M3 16v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M20 12h2"/><path d="M14 12h2"/><path d="M8 12h2"/><path d="M2 12h2"/></svg>
+                                        <span>Flip V</span>
+                                    </button>
+                                    <button class="btn-tool" id="cropper-zoom-in" title="Zoom In">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+                                        <span>Zoom In</span>
+                                    </button>
+                                    <button class="btn-tool" id="cropper-zoom-out" title="Zoom Out">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
+                                        <span>Zoom Out</span>
+                                    </button>
+                                    <button class="btn-tool btn-tool-reset" id="cropper-reset" title="Reset Crop">
+                                        <svg class="btn-svg-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                                        <span>Reset</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="panel-section">
+                                <h4 class="section-title">Export Settings</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cropper-format">Format</label>
+                                        <select id="cropper-format" class="form-select">
+                                            <option value="image/jpeg" selected>JPG / JPEG</option>
+                                            <option value="image/png">PNG</option>
+                                            <option value="image/webp">WEBP</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="label-with-value">
+                                            <label for="cropper-quality">Quality</label>
+                                            <span id="cropper-quality-val" class="badge-value">98%</span>
+                                        </div>
+                                        <input type="range" id="cropper-quality" min="10" max="100" value="98" class="form-slider">
+                                    </div>
+                                </div>
+
+                                <div class="form-check-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="cropper-exact-scale" checked>
+                                        <span>Scale output to exact dimensions</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="panel-actions">
+                                <button class="btn-primary btn-large" id="cropper-download-btn">
+                                    <svg class="btn-svg-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+                                    <span>Download Cropped Image</span>
+                                </button>
+                                <button type="button" class="btn-do-more" id="cropper-do-more-btn" title="Crop more images">
+                                    <span class="btn-icon-symbol">➕</span>
+                                    <span>Crop More Images</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Cropper Canvas Area -->
+                        <div class="preview-panel cropper-preview-panel">
+                            <div class="preview-header">
+                                <span class="badge badge-accent" id="cropper-info-badge">Crop Area: -</span>
+                            </div>
+                            <div class="cropper-wrapper">
+                                <img id="cropper-image" src="" alt="Source for cropping">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =========================================================================
+                 TOOL 4: PRINT SHEET (IMAGES ON PAPER / PASSPORT PHOTO GRID)
+                 ========================================================================= -->
+            <section class="tool-view" id="view-print-sheet">
+                <div class="tool-back-bar">
+                    <button type="button" class="btn-back-to-hub" data-category="image" title="Return to Image Tools">
+                        <span class="back-arrow" aria-hidden="true">&larr;</span>
+                        <span>Back to Image Tools</span>
+                    </button>
+                </div>
+                <div class="tool-header">
+                    <h2>Print Sheet Layout (Passport & Multi-Photo Grid)</h2>
+                    <p class="tool-desc">Arrange photos on paper sheets (A4, A3, Letter, 4x6"). Set image size, count, rows, columns, row/col margins, border, and cut guidelines. Export to Print-Ready PDF or 300 DPI Image.</p>
+                </div>
+
+                <div class="sheet-container">
+                    <!-- Dropzone -->
+                    <div class="dropzone ink-dropzone" id="sheet-dropzone">
+                        <input type="file" id="sheet-file-input" accept="image/*" multiple hidden>
+                        <div class="dropzone-content">
+                            <div class="ink-camera-icon">
+                                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </div>
+                            <h3 class="dropzone-main-text">Drop photos for sheet or <span class="browse-link">browse files</span></h3>
+                            <p class="dropzone-sub-text">Upload photos &bull; Select a photo &amp; click any cell on the sheet to place it</p>
+                        </div>
+                    </div>
+
+                    <!-- Photo Tray & Presto Cell Assignment Bar -->
+                    <div class="sheet-tray-section" id="sheet-tray-section" style="display: none;">
+                        <div class="sheet-tray-header">
+                            <div class="tray-title-area">
+                                <span class="tray-title-icon">🖼️</span>
+                                <h4 class="tray-title">Photo Tray (Presto! Cell Assignment)</h4>
+                                <span class="badge" id="sheet-tray-count">0 photos</span>
+                            </div>
+                            <div class="tray-actions">
+                                <button class="btn-sm btn-primary" id="sheet-add-more-btn">+ Add More Photos</button>
+                                <button class="btn-sm btn-danger" id="sheet-clear-tray-btn" title="Delete all uploaded photos from tray">🗑️ Clear Tray</button>
+                            </div>
+                        </div>
+
+                        <!-- Horizontal Draggable Photo Cards Tray -->
+                        <div class="sheet-thumbnails-row" id="sheet-img-list"></div>
+
+                        <!-- Presto Quick Cell Assignment Bar -->
+                        <div class="sheet-assignment-toolbar">
+                            <div class="active-photo-indicator" id="sheet-active-photo-indicator">
+                                <span class="active-dot">●</span> Active Photo for Placement: <strong id="sheet-active-photo-name">None</strong>
+                            </div>
+                            <div class="assignment-buttons-group">
+                                <button class="btn-sm btn-tool" id="sheet-fill-all-btn" title="Fill every cell on the sheet with the active photo">
+                                    ⚡ Fill All Cells
+                                </button>
+                                <button class="btn-sm btn-tool" id="sheet-fill-empty-btn" title="Fill only unassigned empty cells with the active photo">
+                                    ➕ Fill Empty Cells
+                                </button>
+                                <button class="btn-sm btn-tool" id="sheet-fill-seq-btn" title="Distribute all photos in order across cells">
+                                    🔁 Fill Sequentially
+                                </button>
+                                <button class="btn-sm btn-tool" id="sheet-clear-selected-cell-btn" title="Clear currently active cell">
+                                    ❌ Clear Cell
+                                </button>
+                                <button class="btn-sm btn-tool btn-tool-reset" id="sheet-clear-all-cells-btn" title="Clear all cells">
+                                    🗑️ Clear All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="editor-grid sheet-editor-grid">
+                        <!-- Left Panel: Grid & Paper Controls -->
+                        <div class="controls-panel">
+                            <!-- Saved Layout Presets Section -->
+                            <div class="panel-section" id="sheet-presets-section">
+                                <h4 class="section-title">Saved Layouts</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-saved-layouts-select">Saved Layout</label>
+                                        <select id="sheet-saved-layouts-select" class="form-select">
+                                            <option value="">-- Select Saved Layout --</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-auto flex-row-buttons">
+                                        <button class="btn-primary btn-input-match" id="sheet-load-layout-btn" title="Load Selected Layout">Load</button>
+                                        <button class="btn-danger btn-input-match" id="sheet-delete-layout-btn" title="Delete Selected Layout">🗑️</button>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-layout-name-input">Save Layout As</label>
+                                        <input type="text" id="sheet-layout-name-input" class="form-input" placeholder="e.g. Passport 6x7 A4">
+                                    </div>
+                                    <div class="form-group-auto">
+                                        <button class="btn-secondary btn-input-match" id="sheet-save-layout-btn">
+                                            💾 Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Presto Cell & Picture Selector -->
+                            <div class="panel-section" id="sheet-cell-assignment-section">
+                                <h4 class="section-title">Cell Placement</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-assign-cell-select">Target Cell</label>
+                                        <select id="sheet-assign-cell-select" class="form-select">
+                                            <option value="0">Cell 1</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-assign-photo-select">Picture</label>
+                                        <select id="sheet-assign-photo-select" class="form-select">
+                                            <option value="empty">-- Empty Cell --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn-primary btn-input-match" style="flex: 1;" id="sheet-apply-cell-assign-btn">
+                                        Insert Picture into Cell
+                                    </button>
+                                    <button class="btn-secondary btn-input-match" id="sheet-clear-this-cell-btn">
+                                        Clear
+                                    </button>
+                                </div>
+                                <p class="cell-hint-text">
+                                    💡 Select a photo in the tray above, then click or drag it onto any cell in the preview.
+                                </p>
+                            </div>
+
+                            <!-- Paper Size -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Paper Settings</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-paper-select">Paper Size</label>
+                                        <select id="sheet-paper-select" class="form-select">
+                                            <option value="a4" selected>A4 (210 × 297 mm)</option>
+                                            <option value="a3">A3 (297 × 420 mm)</option>
+                                            <option value="a5">A5 (148 × 210 mm)</option>
+                                            <option value="letter">US Letter (8.5 × 11 in)</option>
+                                            <option value="legal">US Legal (8.5 × 14 in)</option>
+                                            <option value="4x6">4 × 6 inch Photo Paper</option>
+                                            <option value="5x7">5 × 7 inch Photo Paper</option>
+                                            <option value="custom">Custom Paper Size...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Orientation</label>
+                                        <div class="radio-toggle-group">
+                                            <label class="radio-label">
+                                                <input type="radio" name="sheet-orient" value="portrait" checked>
+                                                <span>Portrait</span>
+                                            </label>
+                                            <label class="radio-label">
+                                                <input type="radio" name="sheet-orient" value="landscape">
+                                                <span>Landscape</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row" id="sheet-custom-paper-group" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="sheet-custom-paper-w">Paper Width (mm)</label>
+                                        <input type="number" id="sheet-custom-paper-w" class="form-input" value="210">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-custom-paper-h">Paper Height (mm)</label>
+                                        <input type="number" id="sheet-custom-paper-h" class="form-input" value="297">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Photo Size -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Photo Size</h4>
+                                <div class="form-group">
+                                    <label for="sheet-photo-preset">Preset</label>
+                                    <select id="sheet-photo-preset" class="form-select">
+                                        <option value="custom" selected>Custom Size</option>
+                                        <option value="passport_in">Passport India / UK / EU (3.5 × 4.5 cm)</option>
+                                        <option value="visa_us">US Visa / Passport / OCI (2 × 2 inch)</option>
+                                        <option value="stamp">Stamp Size (2 × 2.5 cm)</option>
+                                        <option value="id_3x4">Standard ID (3 × 4 cm)</option>
+                                        <option value="photo_4x6">4 × 6 cm Photo</option>
+                                        <option value="wallet">Wallet Size (2.5 × 3.5 in)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-photo-unit">Unit</label>
+                                        <select id="sheet-photo-unit" class="form-select">
+                                            <option value="cm">cm</option>
+                                            <option value="mm" selected>mm</option>
+                                            <option value="inch">inch</option>
+                                            <option value="px">px</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-photo-w">Width</label>
+                                        <input type="number" id="sheet-photo-w" class="form-input" step="any" value="30">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-photo-h">Height</label>
+                                        <input type="number" id="sheet-photo-h" class="form-input" step="any" value="35">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 0.5rem;">
+                                    <label for="sheet-photo-fit">Photo Fit (Aspect Ratio)</label>
+                                    <select id="sheet-photo-fit" class="form-select">
+                                        <option value="cover" selected>Fill Cell (Cover)</option>
+                                        <option value="contain">Fit Photo (Contain)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Copies & Grid Mode -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Grid & Copies</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-image-count">Total Photos</label>
+                                        <input type="number" id="sheet-image-count" class="form-input" min="1" max="150" value="42">
+                                    </div>
+                                    <div class="form-group-auto">
+                                        <button class="btn-secondary btn-input-match" id="sheet-fit-max-btn">
+                                            Fit Max Photos
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-grid-mode">Grid Mode</label>
+                                        <select id="sheet-grid-mode" class="form-select">
+                                            <option value="auto">Auto Grid</option>
+                                            <option value="manual" selected>Manual (Rows & Cols)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Fill Order</label>
+                                        <div class="radio-toggle-group">
+                                            <label class="radio-label">
+                                                <input type="radio" name="sheet-direction" value="row-wise" checked>
+                                                <span>Row</span>
+                                            </label>
+                                            <label class="radio-label">
+                                                <input type="radio" name="sheet-direction" value="column-wise">
+                                                <span>Column</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row" id="sheet-manual-grid-group" style="display: flex;">
+                                    <div class="form-group">
+                                        <label for="sheet-manual-rows">Rows</label>
+                                        <input type="number" id="sheet-manual-rows" class="form-input" min="1" value="7">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-manual-cols">Columns</label>
+                                        <input type="number" id="sheet-manual-cols" class="form-input" min="1" value="6">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Margins & Spacing -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Margins (mm)</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-row-margin">Row Margin</label>
+                                        <input type="number" id="sheet-row-margin" class="form-input" step="0.5" min="0" value="4.0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-col-margin">Column Margin</label>
+                                        <input type="number" id="sheet-col-margin" class="form-input" step="0.5" min="0" value="4.0">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-page-margin-top">Top / Bottom Margin</label>
+                                        <input type="number" id="sheet-page-margin-top" class="form-input" step="1" min="0" value="6">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-page-margin-left">Left / Right Margin</label>
+                                        <input type="number" id="sheet-page-margin-left" class="form-input" step="1" min="0" value="5">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="sheet-vertical-align">Vertical Align</label>
+                                        <select id="sheet-vertical-align" class="form-select">
+                                            <option value="top" selected>Top to Bottom</option>
+                                            <option value="center">Center</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group checkbox-align-input">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="sheet-center-page" checked>
+                                            <span>Center Horizontally</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Border & Cut Marks -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Border & Cut Marks</h4>
+                                <div class="form-check-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="sheet-enable-border" checked>
+                                        <span>Show Cell Border</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-row" id="sheet-border-controls">
+                                    <div class="form-group">
+                                        <label for="sheet-border-width">Border Width (mm)</label>
+                                        <input type="number" id="sheet-border-width" class="form-input" step="0.1" min="0.1" value="0.5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sheet-border-color">Border Color</label>
+                                        <input type="color" id="sheet-border-color" value="#333333" class="form-color">
+                                    </div>
+                                </div>
+
+                                <div class="form-check-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="sheet-enable-cutlines" checked>
+                                        <span>Show Cutting Marks</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Sheet Header & Footer Section -->
+                            <div class="panel-section" id="sheet-header-footer-section">
+                                <h4 class="section-title">Header & Footer</h4>
+
+                                <!-- Header Controls -->
+                                <div class="form-check-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="sheet-enable-header">
+                                        <span><strong>Enable Header</strong></span>
+                                    </label>
+                                </div>
+                                <div id="sheet-header-controls" style="display: none; flex-direction: column; gap: 0.6rem;">
+                                    <div class="form-group">
+                                        <label for="sheet-header-text">Header Text</label>
+                                        <input type="text" id="sheet-header-text" class="form-input" placeholder="e.g. Studio Name / Date">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="sheet-header-align">Align</label>
+                                            <select id="sheet-header-align" class="form-select">
+                                                <option value="left">Left</option>
+                                                <option value="center" selected>Center</option>
+                                                <option value="right">Right</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sheet-header-size">Size (pt)</label>
+                                            <input type="number" id="sheet-header-size" class="form-input" min="6" max="36" value="10">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sheet-header-color">Color</label>
+                                            <input type="color" id="sheet-header-color" value="#333333" class="form-color">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Footer Controls -->
+                                <div class="form-check-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="sheet-enable-footer">
+                                        <span><strong>Enable Footer</strong></span>
+                                    </label>
+                                </div>
+                                <div id="sheet-footer-controls" style="display: none; flex-direction: column; gap: 0.6rem;">
+                                    <div class="form-group">
+                                        <label for="sheet-footer-text">Footer Text</label>
+                                        <input type="text" id="sheet-footer-text" class="form-input" placeholder="e.g. Studio Contact / Notes">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="sheet-footer-align">Align</label>
+                                            <select id="sheet-footer-align" class="form-select">
+                                                <option value="left">Left</option>
+                                                <option value="center" selected>Center</option>
+                                                <option value="right">Right</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sheet-footer-size">Size (pt)</label>
+                                            <input type="number" id="sheet-footer-size" class="form-input" min="6" max="36" value="9">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sheet-footer-color">Color</label>
+                                            <input type="color" id="sheet-footer-color" value="#666666" class="form-color">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Print Output Quality Settings -->
+                            <div class="panel-section sheet-export-settings-section" style="padding: 0.85rem; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                                <h4 class="section-title" style="margin-top: 0; margin-bottom: 0.6rem; font-size: 0.85rem;">Print Output Quality</h4>
+                                <div class="form-row">
+                                    <div class="form-group" style="flex: 1;">
+                                        <label for="sheet-export-dpi-select">Resolution</label>
+                                        <select id="sheet-export-dpi-select" class="form-select">
+                                            <option value="300" selected>300 DPI (High-Res Print)</option>
+                                            <option value="600">600 DPI (Ultra-HD Studio Quality)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="flex: 1;">
+                                        <label for="sheet-export-fmt-select">Image Format</label>
+                                        <select id="sheet-export-fmt-select" class="form-select">
+                                            <option value="image/jpeg" selected>JPG (Studio Quality 98%)</option>
+                                            <option value="image/png">PNG (100% Lossless)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="panel-actions">
+                                <button class="btn-primary btn-large" id="sheet-export-pdf-btn">
+                                    <span>📄</span> Download Print-Ready PDF
+                                </button>
+                                <button class="btn-secondary btn-large" id="sheet-export-img-btn">
+                                    <span>🖼️</span> Download 300 DPI Image
+                                </button>
+                                <button class="btn-tool" id="sheet-print-btn" title="Open Browser Print Dialog">
+                                    <span>🖨️</span> Print Directly
+                                </button>
+                                <button type="button" class="btn-do-more" id="sheet-do-more-btn" title="Create more print sheets">
+                                    <span class="btn-icon-symbol">➕</span>
+                                    <span>Do More Print Sheets</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: True-to-scale Sheet Preview (Sticky & Interactive) -->
+                        <div class="preview-panel sheet-preview-panel">
+                            <div class="preview-header">
+                                <div class="preview-header-left">
+                                    <span class="badge badge-accent" id="sheet-stats-badge">0/42 Photos Placed | Capacity: 42</span>
+                                    <span class="badge badge-info" id="sheet-hover-cell-badge">💡 Click any cell to place active photo</span>
+                                </div>
+                                <div class="preview-header-right zoom-controls">
+                                    <button class="btn-icon" id="sheet-zoom-out-btn" title="Zoom Out">−</button>
+                                    <span class="badge" id="sheet-zoom-val">Fit</span>
+                                    <button class="btn-icon" id="sheet-zoom-in-btn" title="Zoom In">+</button>
+                                    <button class="btn-sm" id="sheet-zoom-fit-btn" title="Fit to View">Fit</button>
+                                    <button class="btn-sm" id="sheet-zoom-100-btn" title="100% Scale">100%</button>
+                                </div>
+                            </div>
+                            <div class="sheet-preview-canvas-wrap" id="sheet-canvas-wrap">
+                                <canvas id="sheet-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =========================================================================
+                 TOOL 5: PDF TOOLS SUITE (Resize, Split, Merge, Edit)
+                 ========================================================================= -->
+            <section class="tool-view" id="view-pdf-tools">
+                <div class="tool-back-bar">
+                    <button type="button" class="btn-back-to-hub" data-category="pdf" title="Return to PDF Tools">
+                        <span class="back-arrow" aria-hidden="true">&larr;</span>
+                        <span>Back to PDF Tools</span>
+                    </button>
+                </div>
+                <div class="tool-header">
+                    <h2>PDF Tools Suite</h2>
+                    <p class="tool-desc">Resize page dimensions, split pages/ranges, merge multiple documents, and edit pages (rotate, reorder, delete, watermark, and stamp signature).</p>
+                </div>
+
+                <!-- PDF SUB-TABS -->
+                <div class="pdf-subtabs-nav">
+                    <button class="pdf-subtab-btn active" data-tab="resize">
+                        <span>📐</span> Resize PDF
+                    </button>
+                    <button class="pdf-subtab-btn" data-tab="split">
+                        <span>✂️</span> Split PDF
+                    </button>
+                    <button class="pdf-subtab-btn" data-tab="merge">
+                        <span>📑</span> Merge PDF
+                    </button>
+                    <button class="pdf-subtab-btn" data-tab="edit">
+                        <span>✏️</span> Edit PDF
+                    </button>
+                    <button class="pdf-subtab-btn" data-tab="img-to-pdf">
+                        <span>📄</span> Image to PDF
+                    </button>
+                    <button class="pdf-subtab-btn" data-tab="pdf-to-img">
+                        <span>📷</span> PDF to Image
+                    </button>
+                </div>
+
+                <!-- SUBTAB 1: RESIZE PDF -->
+                <div class="pdf-subtab-panel active" id="pdf-resize-panel">
+                    <div class="dropzone" id="pdf-resize-drop">
+                        <input type="file" id="pdf-resize-input" accept="application/pdf" hidden>
+                        <div class="dropzone-content">
+                            <span class="dropzone-icon">📐</span>
+                            <h3>Select or Drop PDF to Resize</h3>
+                            <p>Scale page sizes to A4, Letter, A3, Legal, or custom mm dimensions</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-controls-card" id="pdf-resize-controls" style="display: none;">
+                        <div class="pdf-info-banner" id="pdf-resize-info"></div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pdf-resize-target">Target Page Size</label>
+                                <select id="pdf-resize-target" class="form-select">
+                                    <option value="a4" selected>A4 (210 × 297 mm)</option>
+                                    <option value="a3">A3 (297 × 420 mm)</option>
+                                    <option value="a5">A5 (148 × 210 mm)</option>
+                                    <option value="letter">US Letter (8.5 × 11 in)</option>
+                                    <option value="legal">US Legal (8.5 × 14 in)</option>
+                                    <option value="custom">Custom Size (mm)...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pdf-resize-orient">Orientation</label>
+                                <select id="pdf-resize-orient" class="form-select">
+                                    <option value="auto" selected>Auto (Match Source)</option>
+                                    <option value="portrait">Portrait</option>
+                                    <option value="landscape">Landscape</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pdf-resize-fit">Fit Mode</label>
+                                <select id="pdf-resize-fit" class="form-select">
+                                    <option value="contain" selected>Fit &amp; Center</option>
+                                    <option value="stretch">Stretch to Fill</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row" id="pdf-resize-custom-group" style="display: none;">
+                            <div class="form-group">
+                                <label for="pdf-resize-custom-w">Width (mm)</label>
+                                <input type="number" id="pdf-resize-custom-w" class="form-input" value="210">
+                            </div>
+                            <div class="form-group">
+                                <label for="pdf-resize-custom-h">Height (mm)</label>
+                                <input type="number" id="pdf-resize-custom-h" class="form-input" value="297">
+                            </div>
+                        </div>
+
+                        <!-- Target File Size Control -->
+                        <div class="target-size-box">
+                            <div class="form-check-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="pdf-resize-enable-target-size">
+                                    <span><strong>Target Output File Size</strong> (Max output size)</span>
+                                </label>
+                            </div>
+                            <div class="target-size-controls" id="pdf-resize-target-size-controls" style="display: none;">
+                                <div class="form-group">
+                                    <label for="pdf-resize-target-size">Dedicated File Size</label>
+                                    <div class="input-with-select">
+                                        <input type="number" id="pdf-resize-target-size" class="form-input" min="10" step="any" value="200" placeholder="e.g. 200">
+                                        <select id="pdf-resize-target-size-unit" class="form-select select-inline">
+                                            <option value="KB" selected>KB</option>
+                                            <option value="MB">MB</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="target-size-presets">
+                                    <button type="button" class="btn-preset pdf-resize-size-preset" data-size="100" data-unit="KB">100 KB</button>
+                                    <button type="button" class="btn-preset pdf-resize-size-preset" data-size="200" data-unit="KB">200 KB</button>
+                                    <button type="button" class="btn-preset pdf-resize-size-preset" data-size="500" data-unit="KB">500 KB</button>
+                                    <button type="button" class="btn-preset pdf-resize-size-preset" data-size="1" data-unit="MB">1 MB</button>
+                                    <button type="button" class="btn-preset pdf-resize-size-preset" data-size="2" data-unit="MB">2 MB</button>
+                                </div>
+                                <small class="text-muted" style="display: block; margin-top: 0.25rem;">
+                                    Compresses and optimizes pages to fit within your specified file size limit.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="panel-actions">
+                            <button class="btn-primary btn-large" id="pdf-resize-action-btn">
+                                <span>📐</span> Resize and Download PDF
+                            </button>
+                            <button type="button" class="btn-do-more" id="pdf-resize-do-more-btn" title="Resize more PDFs">
+                                <span class="btn-icon-symbol">➕</span>
+                                <span>Do More PDF Resize</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 2: SPLIT PDF -->
+                <div class="pdf-subtab-panel" id="pdf-split-panel">
+                    <div class="dropzone" id="pdf-split-drop">
+                        <input type="file" id="pdf-split-input" accept="application/pdf" hidden>
+                        <div class="dropzone-content">
+                            <span class="dropzone-icon">✂️</span>
+                            <h3>Select or Drop PDF to Split</h3>
+                            <p>Extract specific page ranges, split every N pages, or split into individual single pages</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-controls-card" id="pdf-split-controls" style="display: none;">
+                        <div class="pdf-info-banner" id="pdf-split-info"></div>
+
+                        <div class="panel-section">
+                            <h4 class="section-title">Split Mode</h4>
+                            <div class="radio-toggle-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="pdf-split-mode" value="range" checked>
+                                    <span>Extract Selected Pages</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="pdf-split-mode" value="all">
+                                    <span>Split All Pages (ZIP)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="pdf-split-mode" value="interval">
+                                    <span>Split Every N Pages</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group" id="pdf-split-range-group" style="margin-top: 1rem;">
+                                <label for="pdf-split-range">Page Range (e.g. 1-3, 5, 8)</label>
+                                <input type="text" id="pdf-split-range" class="form-input" placeholder="e.g. 1-5, 8, 11-12">
+                                <small class="text-muted">You can also check/uncheck page thumbnails below.</small>
+                            </div>
+
+                            <div class="form-group" id="pdf-split-interval-group" style="margin-top: 1rem; display: none;">
+                                <label for="pdf-split-interval">Split every N pages</label>
+                                <input type="number" id="pdf-split-interval" class="form-input" min="1" value="1">
+                            </div>
+                        </div>
+
+                        <!-- Page Thumbnails Grid -->
+                        <div class="panel-section">
+                            <h4 class="section-title">Page Preview & Selection</h4>
+                            <div class="pdf-thumbs-grid" id="pdf-split-thumbs"></div>
+                        </div>
+
+                        <div class="panel-actions">
+                            <button class="btn-primary btn-large" id="pdf-split-action-btn">
+                                <span>✂️</span> Split and Download
+                            </button>
+                            <button type="button" class="btn-do-more" id="pdf-split-do-more-btn" title="Split more PDFs">
+                                <span class="btn-icon-symbol">➕</span>
+                                <span>Do More PDF Split</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 3: MERGE PDF -->
+                <div class="pdf-subtab-panel" id="pdf-merge-panel">
+                    <div class="dropzone" id="pdf-merge-drop">
+                        <input type="file" id="pdf-merge-input" accept="application/pdf" multiple hidden>
+                        <div class="dropzone-content">
+                            <span class="dropzone-icon">📑</span>
+                            <h3>Select or Drop PDF Files to Merge</h3>
+                            <p>Select 2 or more PDF documents to combine into a single document</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-controls-card" id="pdf-merge-controls" style="display: none;">
+                        <h4 class="section-title">Document Order (Reorder using arrows)</h4>
+                        <div class="pdf-merge-items-list" id="pdf-merge-list"></div>
+
+                        <div class="panel-actions space-between">
+                            <button class="btn-secondary" id="pdf-merge-clear-btn">Clear All</button>
+                            <button class="btn-primary btn-large" id="pdf-merge-action-btn">
+                                <span>📑</span> Merge All PDFs
+                            </button>
+                            <button type="button" class="btn-do-more" id="pdf-merge-do-more-btn" title="Merge more PDFs">
+                                <span class="btn-icon-symbol">➕</span>
+                                <span>Do More PDF Merge</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 4: EDIT PDF -->
+                <div class="pdf-subtab-panel" id="pdf-edit-panel">
+                    <div class="dropzone" id="pdf-edit-drop">
+                        <input type="file" id="pdf-edit-input" accept="application/pdf" hidden>
+                        <div class="dropzone-content">
+                            <span class="dropzone-icon">✏️</span>
+                            <h3>Select or Drop PDF to Edit</h3>
+                            <p>Rotate pages, delete, reorder, add watermarks, and stamp signature</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-controls-card" id="pdf-edit-controls" style="display: none;">
+                        <div class="pdf-info-banner" id="pdf-edit-info"></div>
+
+                        <!-- Edit Toolbar -->
+                        <div class="edit-toolbar-row">
+                            <button class="btn-tool" id="pdf-edit-rotate-all">⟳ Rotate All Pages 90°</button>
+                            <button class="btn-tool btn-tool-reset" id="pdf-edit-reset">↺ Reset Changes</button>
+                        </div>
+
+                        <!-- Page Cards Grid -->
+                        <div class="panel-section">
+                            <h4 class="section-title">Pages (Reorder, Rotate, Delete)</h4>
+                            <div class="pdf-edit-grid" id="pdf-edit-pages-grid"></div>
+                        </div>
+
+                        <!-- Watermark & Stamp Section -->
+                        <div class="editor-grid pdf-annotations-grid">
+                            <!-- Watermark Panel -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Text Watermark</h4>
+                                <div class="form-group">
+                                    <label for="pdf-edit-wm-text">Watermark Text</label>
+                                    <input type="text" id="pdf-edit-wm-text" class="form-input" placeholder="e.g. CONFIDENTIAL, DRAFT, COPY">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="pdf-edit-wm-size">Font Size</label>
+                                        <input type="number" id="pdf-edit-wm-size" class="form-input" value="44" min="10" max="150">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pdf-edit-wm-color">Color</label>
+                                        <input type="color" id="pdf-edit-wm-color" value="#FF0000" class="form-color">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pdf-edit-wm-opacity">Opacity</label>
+                                        <select id="pdf-edit-wm-opacity" class="form-select">
+                                            <option value="0.15">15% (Subtle)</option>
+                                            <option value="0.3" selected>30% (Standard)</option>
+                                            <option value="0.5">50% (Prominent)</option>
+                                            <option value="0.8">80% (Solid)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pdf-edit-wm-angle">Angle</label>
+                                        <select id="pdf-edit-wm-angle" class="form-select">
+                                            <option value="45" selected>45° (Diagonal)</option>
+                                            <option value="0">0° (Horizontal)</option>
+                                            <option value="-45">-45° (Diagonal)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stamp / Signature Panel -->
+                            <div class="panel-section">
+                                <h4 class="section-title">Signature / Stamp Image</h4>
+                                <div class="form-group">
+                                    <label for="pdf-edit-stamp-input">Upload Stamp / Signature (PNG / JPG)</label>
+                                    <input type="file" id="pdf-edit-stamp-input" accept="image/*" class="form-input">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="pdf-edit-stamp-page">Target Page</label>
+                                        <select id="pdf-edit-stamp-page" class="form-select">
+                                            <option value="last" selected>Last Page</option>
+                                            <option value="first">First Page</option>
+                                            <option value="all">All Pages</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pdf-edit-stamp-pos">Position</label>
+                                        <select id="pdf-edit-stamp-pos" class="form-select">
+                                            <option value="bottom-right" selected>Bottom Right</option>
+                                            <option value="bottom-left">Bottom Left</option>
+                                            <option value="center">Center</option>
+                                            <option value="top-right">Top Right</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pdf-edit-stamp-scale">Scale (%)</label>
+                                        <input type="number" id="pdf-edit-stamp-scale" class="form-input" min="10" max="300" value="80">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-actions">
+                            <button class="btn-primary btn-large" id="pdf-edit-save-btn">
+                                <span>💾</span> Save & Download Edited PDF
+                            </button>
+                            <button type="button" class="btn-do-more" id="pdf-edit-do-more-btn" title="Edit more PDFs">
+                                <span class="btn-icon-symbol">➕</span>
+                                <span>Do More PDF Edit</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 5: IMAGE TO PDF -->
+                <div class="pdf-subtab-panel" id="pdf-img-to-pdf-panel">
+                    <div class="dropzone ink-dropzone" id="pdf-img-to-pdf-drop">
+                        <input type="file" id="pdf-img-to-pdf-input" accept="image/*" multiple hidden>
+                        <div class="dropzone-content">
+                            <div class="ink-camera-icon">
+                                <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                    <polyline points="14 19 18 19 18 15"></polyline>
+                                </svg>
+                            </div>
+                            <h3 class="dropzone-main-text">Drop image(s) to convert to PDF or <span class="browse-link">browse files</span></h3>
+                            <p class="dropzone-sub-text">Convert single or batch JPG, PNG, WEBP images into a clean PDF document</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-controls-card" id="pdf-img-to-pdf-controls" style="display: none;">
+                        <div class="pdf-info-banner" id="pdf-img-to-pdf-info"></div>
+
+                        <!-- Thumbnails Reorder Tray -->
+                        <div class="img-to-pdf-thumbs-wrap">
+                            <div class="section-subtitle" style="font-family: var(--font-serif); font-weight: 600; margin-bottom: 0.6rem;">
+                                Images to Include (<span id="img-to-pdf-count">0</span> images)
+                            </div>
+                            <div class="img-to-pdf-thumbs-grid" id="img-to-pdf-thumbs"></div>
+                        </div>
+
+                        <div class="panel-section">
+                            <h4 class="section-title">PDF Page Options</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="img-to-pdf-page-size">Page Size</label>
+                                    <select id="img-to-pdf-page-size" class="form-select">
+                                        <option value="a4" selected>A4 (210 × 297 mm)</option>
+                                        <option value="letter">Letter (8.5 × 11 in)</option>
+                                        <option value="fit">Fit to Image Size</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="img-to-pdf-orientation">Orientation</label>
+                                    <select id="img-to-pdf-orientation" class="form-select">
+                                        <option value="portrait" selected>Portrait</option>
+                                        <option value="landscape">Landscape</option>
+                                        <option value="auto">Auto (Match Image)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="img-to-pdf-margin">Margin</label>
+                                    <select id="img-to-pdf-margin" class="form-select">
+                                        <option value="none" selected>No Margin (0 mm)</option>
+                                        <option value="small">Small (5 mm)</option>
+                                        <option value="normal">Normal (10 mm)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-actions">
+                            <button class="btn-primary btn-large" id="img-to-pdf-action-btn">
+                                <span>📄</span> Convert &amp; Download PDF
+                            </button>
+                            <button class="btn-secondary" id="img-to-pdf-clear-btn">
+                                <span>🗑️</span> Clear Images
+                            </button>
+                            <button type="button" class="btn-do-more" id="img-to-pdf-do-more-btn" title="Convert more images to PDF">
+                                <span class="btn-icon-symbol">➕</span>
+                                <span>Do More Image to PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 6: PDF TO IMAGE -->
+                <div class="pdf-subtab-panel" id="pdf-pdf-to-img-panel">
+                    <div class="dropzone ink-dropzone" id="pdf-to-img-drop">
+                        <input type="file" id="pdf-to-img-input" accept="application/pdf" hidden>
+                        <div class="dropzone-content">
+                            <div class="ink-camera-icon">
+                                <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <path d="M10 12l2 2 4-4"></path>
+                                </svg>
+                            </div>
+                            <h3 class="dropzone-main-text">Select or drop PDF to convert to images or <span class="browse-link">browse file</span></h3>
+                            <p class="dropzone-sub-text">Extract and render PDF pages into high-resolution JPG or PNG images</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-controls-card" id="pdf-to-img-controls" style="display: none;">
+                        <div class="pdf-info-banner" id="pdf-to-img-info"></div>
+
+                        <!-- Pages Selection Grid -->
+                        <div class="pdf-pages-selection-wrap">
+                            <div class="section-subtitle" style="font-family: var(--font-serif); font-weight: 600; margin-bottom: 0.6rem;">
+                                Select Pages to Convert
+                            </div>
+                            <div class="pdf-to-img-pages-grid" id="pdf-to-img-pages-grid"></div>
+                        </div>
+
+                        <div class="panel-section">
+                            <h4 class="section-title">Conversion Settings</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="pdf-to-img-format">Image Format</label>
+                                    <select id="pdf-to-img-format" class="form-select">
+                                        <option value="image/jpeg" selected>JPG / JPEG</option>
+                                        <option value="image/png">PNG</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pdf-to-img-dpi">Resolution / DPI</label>
+                                    <select id="pdf-to-img-dpi" class="form-select">
+                                        <option value="300" selected>300 DPI (Print)</option>
+                                        <option value="150">150 DPI (Standard)</option>
+                                        <option value="72">72 DPI (Web)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="pdf-to-img-quality-group">
+                                    <div class="label-with-value">
+                                        <label for="pdf-to-img-quality">JPG Quality</label>
+                                        <span id="pdf-to-img-quality-val" class="badge-value">92%</span>
+                                    </div>
+                                    <input type="range" id="pdf-to-img-quality" min="10" max="100" value="92" class="form-slider">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-actions">
+                            <button class="btn-primary btn-large" id="pdf-to-img-action-btn">
+                                <span>🖼️</span> Convert &amp; Download Images
+                            </button>
+                            <button class="btn-secondary" id="pdf-to-img-reset-btn">
+                                <span>🔄</span> Reset
+                            </button>
+                            <button type="button" class="btn-do-more" id="pdf-to-img-do-more-btn" title="Convert more PDFs to images">
+                                <span class="btn-icon-symbol">➕</span>
+                                <span>Do More PDF to Image</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                </main>
+
+        
+
+        <!-- FOOTER (with Privacy Badge and Copyright) -->
+        <footer class="app-footer">
+            <div class="footer-privacy-pill">
+                <span class="footer-lock-icon">🔒</span>
+                <span class="footer-privacy-text">100% client-side privacy &bull; Your files never leave your device</span>
+            </div>
+            <p class="footer-copyright">2026 &copy; All rights reserved - impdtools</p>
+        </footer>
+    </div>
+
+    <!-- HELP & SHORTCUTS MODAL -->
+    <div class="modal" id="help-modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>impdtools - Quick Guide & Tips</h3>
+                <button class="modal-close" id="help-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h4>📐 DPI & Print Quality</h4>
+                    <p><strong>DPI (Dots Per Inch)</strong> controls the resolution when printing. <strong>300 DPI</strong> is standard photographic print quality. Our tools write true JFIF 300 DPI headers into exported JPEG files so printers and photo studios recognize the exact physical scale.</p>
+                </div>
+                <div class="help-section">
+                    <h4>📷 Standard Passport & Visa Sizes</h4>
+                    <ul>
+                        <li><strong>India / UK / Schengen / Australia Passport:</strong> 3.5 × 4.5 cm (35 × 45 mm)</li>
+                        <li><strong>US Visa / Passport / OCI:</strong> 2 × 2 inches (5.08 × 5.08 cm / 51 × 51 mm)</li>
+                        <li><strong>Standard Stamp Size:</strong> 2.0 × 2.5 cm (20 × 25 mm)</li>
+                        <li><strong>Japan / Asian ID:</strong> 3.0 × 4.0 cm (30 × 40 mm)</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h4>🖨️ Printing Instructions (100% Scale)</h4>
+                    <p>When printing your generated PDF or sheet from Chrome, Edge, or Adobe Acrobat:</p>
+                    <ol>
+                        <li>Choose paper size matching your sheet (e.g. <strong>A4</strong> or <strong>4×6"</strong>).</li>
+                        <li>Set Scale to <strong>100%</strong> or <strong>"Actual Size"</strong> (Do NOT choose "Fit to Printable Area").</li>
+                        <li>Turn on Border and Cut marks in our tool for effortless scissor trimming.</li>
+                    </ol>
+                </div>
+                <div class="help-section">
+                    <h4>🔒 100% Privacy & Offline Support</h4>
+                    <p>All image and PDF processing is performed entirely in your browser using Web APIs and WebAssembly. No data is sent to any external server.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILENAME PROMPT MODAL -->
+    <div class="modal" id="filename-modal">
+        <div class="modal-dialog modal-dialog-sm">
+            <div class="modal-header">
+                <h3 id="filename-modal-title">Save File As</h3>
+                <button class="modal-close" id="filename-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="filename-modal-input">File Name</label>
+                    <div class="filename-input-row">
+                        <input type="text" id="filename-modal-input" class="form-input" placeholder="Enter file name">
+                        <span class="filename-ext-badge" id="filename-modal-ext">.jpg</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary btn-input-match" id="filename-modal-cancel">Cancel</button>
+                    <button type="button" class="btn-primary btn-input-match" id="filename-modal-confirm">⬇️ Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- LOCAL & CDN SCRIPT LIBRARIES -->
+    <!-- Local libraries downloaded in lib/ directory -->
+    <script src="lib/pdf-lib.min.js"></script>
+    <script src="lib/pdf.min.js"></script>
+    <script src="lib/cropper.min.js"></script>
+    <script src="lib/jszip.min.js"></script>
+
+    <!-- Fallback to CDN if local files failed -->
+    <script>
+        if (typeof PDFLib === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"><\/script>');
+        }
+        if (typeof Cropper === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"><\/script>');
+        }
+        if (typeof pdfjsLib === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"><\/script>');
+        }
+        if (typeof JSZip === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"><\/script>');
+        }
+    </script>
+
+    <!-- Application Modules -->
+    <script src="js/utils.js"></script>
+    <script src="js/image-resizer.js"></script>
+    <script src="js/bulk-resizer.js"></script>
+    <script src="js/image-combiner.js"></script>
+    <script src="js/image-cropper.js"></script>
+    <script src="js/print-sheet.js"></script>
+    <script src="js/pdf-tools.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

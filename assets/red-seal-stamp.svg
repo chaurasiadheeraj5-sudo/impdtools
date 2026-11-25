@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <defs>
+    <radialGradient id="sealGrad" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#E24C38"/>
+      <stop offset="65%" stop-color="#C53625"/>
+      <stop offset="100%" stop-color="#A52618"/>
+    </radialGradient>
+    <filter id="sealTexture" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <!-- Seal Circle with Ink Bleed Texture -->
+  <circle cx="40" cy="40" r="34" fill="url(#sealGrad)" filter="url(#sealTexture)"/>
+  <!-- Inner Traditional Character / Modern Minimal Seal Pattern -->
+  <g fill="none" stroke="#FAF4EC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+    <circle cx="40" cy="40" r="26" stroke-width="1.8" stroke-dasharray="2 1.5"/>
+    <!-- Stylized 'IM' / mountain seal motif -->
+    <path d="M28 47 V33 L35 41 L40 33 L45 41 L52 33 V47"/>
+    <path d="M25 49 H55" stroke-width="2.2"/>
+  </g>
+</svg>

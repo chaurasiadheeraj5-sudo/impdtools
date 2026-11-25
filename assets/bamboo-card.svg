@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" preserveAspectRatio="xMaxYMax meet">
+  <g fill="#374854" opacity="0.45">
+    <!-- Bamboo Stalk 1 -->
+    <path d="M110 120 V85 H113 V120 Z"/>
+    <path d="M110 82 V48 H113 V82 Z"/>
+    <path d="M111 45 V15 H113.5 V45 Z"/>
+    <!-- Joints -->
+    <ellipse cx="111.5" cy="83.5" rx="3.5" ry="1.2"/>
+    <ellipse cx="111.5" cy="46.5" rx="3" ry="1.2"/>
+
+    <!-- Bamboo Stalk 2 -->
+    <path d="M135 120 V75 H137.5 V120 Z"/>
+    <path d="M135 72 V30 H137.5 V72 Z"/>
+    <!-- Joints -->
+    <ellipse cx="136.2" cy="73.5" rx="3" ry="1"/>
+
+    <!-- Graceful Sumi Leaves -->
+    <path d="M112 83 C105 78 92 77 82 82 C92 85 104 86 112 83 Z"/>
+    <path d="M112 83 C102 73 90 70 78 72 C90 77 102 81 112 83 Z"/>
+    <path d="M112 83 C118 76 128 72 138 74 C128 78 120 81 112 83 Z"/>
+
+    <path d="M111 46 C102 38 88 36 76 40 C88 44 100 45 111 46 Z"/>
+    <path d="M111 46 C118 39 129 36 140 38 C128 42 120 44 111 46 Z"/>
+
+    <path d="M136 73 C128 66 115 65 104 69 C115 72 125 73 136 73 Z"/>
+    <path d="M136 73 C142 66 153 63 162 65 C152 69 144 71 136 73 Z"/>
+    <path d="M136 30 C126 22 112 21 100 25 C112 28 123 29 136 30 Z"/>
+  </g>
+</svg>

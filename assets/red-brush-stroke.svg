@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 28" width="520" height="28" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="redBrushGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D4402E" stop-opacity="0.15"/>
+      <stop offset="8%" stop-color="#C73424" stop-opacity="0.85"/>
+      <stop offset="45%" stop-color="#B82819" stop-opacity="0.95"/>
+      <stop offset="80%" stop-color="#C73424" stop-opacity="0.9"/>
+      <stop offset="96%" stop-color="#D4402E" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#D4402E" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Natural dynamic calligraphy stroke with bristled tapered edges -->
+  <path d="M4 14 C45 8 110 5 185 7 C260 9 340 6 420 8 C465 9 495 11 516 14 C490 17 440 21 370 19 C290 17 210 22 130 19 C80 17 35 18 4 14 Z" fill="url(#redBrushGrad)"/>
+  <path d="M28 13 C105 8 215 9 320 10 C395 11 460 13 490 15 C440 17 360 16 280 15 C190 14 90 15 28 13 Z" fill="#991D11" opacity="0.6"/>
+  <!-- Bristle splatters -->
+  <ellipse cx="12" cy="13.5" rx="3.5" ry="1.2" fill="#C73424" opacity="0.7"/>
+  <ellipse cx="505" cy="14.2" rx="4" ry="1" fill="#C73424" opacity="0.5"/>
+</svg>
